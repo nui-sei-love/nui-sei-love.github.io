@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>スライドパズル</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>スライドパズル</h1>
+
+        <div class="controls">
+            <input type="file" id="imageInput" accept="image/*">
+            <label for="imageInput" class="button">画像を選択</label>
+        </div>
+
+        <div class="puzzle-area-wrapper">
+            <div id="puzzleArea" class="puzzle-area">
+                </div>
+            <div id="originalImageDisplay" class="original-image-display">
+                </div>
+        </div>
+
+        <button id="resetButton" class="button">リセット</button>
+    </div>
+
+    <div id="clearModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <div class="modal-body">
+                <p>✨ パズルクリア！おめでとう！ ✨</p>
+                <button id="modalResetButton" class="button">もう一度遊ぶ</button>
+                <button id="modalCloseButton" class="button close-modal-only">閉じる</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
