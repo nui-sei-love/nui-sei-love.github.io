@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ねこマインスイーパー</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1>🐾 ねこマインスイーパー 🐾</h1>
+        <div class="controls">
+            <label for="difficulty-select">猫のごはん🐟🥩を踏まないように掃除しよう！</label>
+            <select id="difficulty-select">
+                <option value="easy">のんびり (5x5, 餌3)</option>
+                <option value="medium">ふつう (8x8, 餌10)</option>
+                <option value="hard">やんちゃ (10x10, 餌20)</option>
+            </select>
+            <button id="start-button">ゲーム開始</button>
+        </div>
+
+        <div id="game-board" class="game-board"></div>
+
+        <div id="message-area" class="message-area"></div>
+        </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

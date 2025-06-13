@@ -1,0 +1,175 @@
+body {
+    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* 画面上部に寄せる */
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f8f8f8; /* 全体の背景色 */
+    color: #333;
+    padding: 20px 10px; /* 上下の余白を追加 */
+    box-sizing: border-box;
+}
+
+.game-container {
+    background-color: #ffffff; /* ゲーム全体の背景を白に */
+    border: 3px solid #d2b48c; /* パステルブラウンの枠線 */
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px; /* スマホ向けに最大幅を設定 */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+h1 {
+    color: #8b4513; /* 茶色系の見出し */
+    margin-top: 0;
+    font-size: 1.8em;
+    margin-bottom: 20px;
+}
+
+.controls {
+    margin-bottom: 25px;
+    display: flex;
+    flex-direction: column; /* 縦並びにする */
+    gap: 15px; /* 要素間のスペース */
+    align-items: center; /* 中央寄せ */
+}
+
+.controls label {
+    font-size: 1.1em;
+    color: #654321;
+}
+
+.controls select,
+.controls button {
+    padding: 10px 15px;
+    font-size: 1em;
+    border: 2px solid #deb887; /* ボタンやセレクトボックスの枠線 */
+    border-radius: 8px;
+    background-color: #faebd7; /* 薄いベージュ系の背景 */
+    color: #654321;
+    cursor: pointer;
+    transition: background-color 0.2s, border-color 0.2s;
+    width: 80%; /* 幅を調整 */
+    max-width: 250px; /* 最大幅 */
+    box-sizing: border-box;
+}
+
+.controls button:hover {
+    background-color: #f5deb3; /* ホバー時の色 */
+    border-color: #d2b48c;
+}
+
+.game-board {
+    display: grid;
+    border: 2px solid #8b4513; /* ゲームボード全体の枠線 */
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1);
+    background-color: #fffafa; /* ボードの背景色（開いたマスの色） */
+    margin: 0 auto; /* 中央揃え */
+    width: fit-content; /* 内容に合わせて幅を調整 */
+    height: fit-content;
+}
+
+.cell {
+    width: 40px; /* マス目の基本サイズ */
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: #faf0e6; /* 未クリックのマス目の色 */
+    border: 1px solid #d2b48c; /* マス目間の線 */
+    box-sizing: border-box;
+    transition: background-color 0.1s, box-shadow 0.1s, border-color 0.1s; /* アニメーションを追加 */
+    user-select: none; /* テキスト選択を無効化 */
+
+    /* ★ここから追加・変更★ */
+    /* 立体感を出すためのボックスシャドウ */
+    box-shadow: 
+        inset 2px 2px 5px rgba(255, 255, 255, 0.6), /* 左上からの光 */
+        inset -2px -2px 5px rgba(0, 0, 0, 0.2); /* 右下からの影 */
+    border-top: 1px solid #ffffff; /* 明るいトップボーダー */
+    border-left: 1px solid #ffffff; /* 明るいレフトボーダー */
+    border-right: 1px solid #bda78d; /* 少し暗いライトボーダー */
+    border-bottom: 1px solid #bda78d; /* 少し暗いボトムボーダー */
+    /* ★ここまで追加・変更★ */
+}
+
+.cell.opened {
+    background-color: #fffafa; /* 開いたマス目の色 */
+    /* ★ここから追加・変更★ */
+    /* 立体感をなくし平面に見せる */
+    box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.1); /* わずかな凹み感 */
+    border: 1px solid #c0c0c0; /* より細く、平面に見えるボーダー */
+    /* ★ここまで追加・変更★ */
+    cursor: default;
+}
+.cell.bomb {
+    background-color: #ffcccc; /* 爆弾を踏んだ時の色 */
+}
+
+/* 数字の色 */
+.cell.num-1 { color: #0000ff; } /* 青 */
+.cell.num-2 { color: #008000; } /* 緑 */
+.cell.num-3 { color: #ff0000; } /* 赤 */
+.cell.num-4 { color: #000080; } /* 濃い青 */
+.cell.num-5 { color: #800000; } /* 濃い赤 */
+.cell.num-6 { color: #008080; } /* シアン */
+.cell.num-7 { color: #000000; } /* 黒 */
+.cell.num-8 { color: #808080; } /* 灰色 */
+
+.message-area {
+    margin-top: 25px;
+    font-size: 2.5em; /* 拡大表示 */
+    min-height: 50px; /* メッセージ表示用に最低限の高さを確保 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.reset-button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 1.1em;
+    background-color: #d2b48c; /* パステルブラウンのボタン */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.reset-button:hover {
+    background-color: #c0a47a;
+}
+
+/* レスポンシブデザイン */
+@media (max-width: 480px) {
+    .cell {
+        width: 35px; /* スマホでマス目を少し小さく */
+        height: 35px;
+        font-size: 1.3em;
+    }
+    .game-container {
+        padding: 15px;
+    }
+    h1 {
+        font-size: 1.5em;
+    }
+    .message-area {
+        font-size: 2em;
+    }
+}
+
+@media (max-width: 360px) {
+    .cell {
+        box-shadow: 
+            inset 1px 1px 3px rgba(255, 255, 255, 0.6), 
+            inset -1px -1px 3px rgba(0, 0, 0, 0.2);
+    }
+}
