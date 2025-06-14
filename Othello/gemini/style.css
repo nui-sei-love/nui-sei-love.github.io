@@ -215,7 +215,7 @@ h1 {
 @media (max-width: 380px) {
     .container {
         /* マス30px * 8マス + 線2px * 7本 */
-        width: calc(30px * 8 + 2px * 7);
+        width: calc(30px * 8 + 2px * 7)+20;
         padding: 10px;
     }
     .board {
