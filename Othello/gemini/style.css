@@ -172,7 +172,7 @@ h1 {
         border-top-color: #deb887;
         border-left-color: #deb887;
         /* マス35px * 8マス + 線2px * 7本 */
-        width: calc(35px * 8 + 2px * 7);
+        width: calc(35px * 8 + 2px * 7)+20;
         max-width: 95vw;
     }
 
@@ -200,7 +200,7 @@ h1 {
     }
 
     .piece {
-        font-size: 2em; /* コマのサイズも調整 */
+        font-size: 1.6em; /* コマのサイズも調整 */
     }
 
     .status-panel p {
