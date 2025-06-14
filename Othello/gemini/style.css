@@ -208,7 +208,7 @@ h1 {
     }
 
     .message, .reset-button {
-        font-size: 1em;
+        font-size: 0.8em;
     }
 }
 
@@ -230,6 +230,6 @@ h1 {
         height: 30px;
     }
     .piece {
-        font-size: 1.8em; /* コマのサイズも調整 */
+        font-size: 1.6em; /* コマのサイズも調整 */
     }
 }
