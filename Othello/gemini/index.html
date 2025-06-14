@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ねこオセロ</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>ねこオセロ</h1>
+
+        <div id="player-selection" class="player-selection">
+            <p>どちらの猫でプレイしますか？</p>
+            <div class="emoji-options">
+                <button id="select-cat-black" class="emoji-button">🐈‍⬛</button>
+                <button id="select-cat-white" class="emoji-button">🐈</button>
+            </div>
+        </div>
+
+        <div id="game-area" class="game-area hidden">
+            <div class="status-panel">
+                <p>現在のプレイヤー: <span id="current-player-emoji"></span></p>
+                <p>黒: <span id="score-black">2</span> / 白: <span id="score-white">2</span></p>
+            </div>
+            <div id="board" class="board"></div>
+            <p id="message" class="message"></p>
+            <button id="reset-button" class="reset-button">もう一度遊ぶ</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
