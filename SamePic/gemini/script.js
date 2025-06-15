@@ -1,135 +1,106 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const emojis = ['🐈‍⬛', '🐈', '🦐', '🪲', '🦋', '💎', '🌹', '🪻', '🍩', '🐣'];
-    const gameBoard = document.getElementById('game-board');
-    const mistakesDisplay = document.getElementById('mistakes');
-    const remainingPairsDisplay = document.getElementById('remaining-pairs');
-    const resetButton = document.getElementById('reset-button');
-    const gameMessage = document.getElementById('game-message');
-
-    let cards = [];
+    const emojis = ['🐾', '🐈', '🐸', '🐞', '🦋', '💎', '🌻', '🍀', '🍩', '🐟'];
+    let gameBoard = [];
     let flippedCards = [];
     let matchedPairs = 0;
-    let mistakes = 0;
-    let gameLocked = false; // カードめくり中にクリックできないようにロック
+    let failCount = 0;
+    const maxFails = 10;
 
-    const maxMistakes = 10;
-    const totalPairs = emojis.length;
+    const puzzleBoard = document.getElementById('puzzle-board');
+    const failCountDisplay = document.getElementById('fail-count');
+    const gameOverScreen = document.getElementById('game-over-screen');
+    const gameOverMessage = document.getElementById('game-over-message');
+    const restartButton = document.getElementById('restart-button');
 
-    // ゲームの初期化
     function initializeGame() {
-        // パネルを空にする
-        gameBoard.innerHTML = '';
-        cards = [];
+        gameBoard = [];
         flippedCards = [];
         matchedPairs = 0;
-        mistakes = 0;
-        gameLocked = false;
+        failCount = 0;
+        failCountDisplay.textContent = failCount;
+        puzzleBoard.innerHTML = '';
+        gameOverScreen.classList.remove('active');
 
-        mistakesDisplay.textContent = mistakes;
-        remainingPairsDisplay.textContent = totalPairs;
-        gameMessage.textContent = '';
-        resetButton.style.display = 'none'; // リセットボタンを隠す
+        let cards = [...emojis, ...emojis];
+        cards.sort(() => Math.random() - 0.5);
 
-        // 絵文字を2倍にしてシャッフル
-        const shuffledEmojis = shuffle([...emojis, ...emojis]);
-
-        // カードを生成
-        shuffledEmojis.forEach((emoji, index) => {
+        cards.forEach((emoji, index) => {
             const card = document.createElement('div');
             card.classList.add('card');
-            card.dataset.emoji = emoji; // 絵文字をデータ属性に保存
+            card.dataset.emoji = emoji; // 親要素に絵文字データを保持
+            card.dataset.index = index;
+
+            const cardInner = document.createElement('div');
+            cardInner.classList.add('card-inner');
 
             const cardFront = document.createElement('div');
-            cardFront.classList.add('card-front', 'card-inner'); // 表面
-            cardFront.textContent = emoji; // 表面に絵文字を表示
+            cardFront.classList.add('card-front');
+            // cardFront.textContent = '?'; // ★削除：card-frontには絵文字は不要
 
             const cardBack = document.createElement('div');
-            cardBack.classList.add('card-back', 'card-inner'); // 裏面
+            cardBack.classList.add('card-back');
+            cardBack.textContent = emoji; // ★確認：ここに絵文字が設定されていることを再度確認
 
-            // card要素の中に裏面と表面を追加
-            card.appendChild(cardFront);
-            card.appendChild(cardBack);
+            cardInner.appendChild(cardFront);
+            cardInner.appendChild(cardBack);
+            card.appendChild(cardInner);
 
-            card.addEventListener('click', () => flipCard(card));
-            gameBoard.appendChild(card);
-            cards.push(card);
+            card.addEventListener('click', handleCardClick);
+            puzzleBoard.appendChild(card);
+            gameBoard.push(card);
         });
     }
 
-    // 配列をシャッフルする関数 (Fisher-Yates)
-    function shuffle(array) {
-        let currentIndex = array.length, randomIndex;
-        while (currentIndex !== 0) {
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-            [array[currentIndex], array[randomIndex]] = [
-                array[randomIndex], array[currentIndex]];
-        }
-        return array;
-    }
+    function handleCardClick(event) {
+        const clickedCard = event.target.closest('.card');
 
-    // カードをめくる処理
-    function flipCard(card) {
-        // ゲームがロックされているか、既にめくられているか、マッチ済みなら何もしない
-        if (gameLocked || card.classList.contains('is-flipped') || card.classList.contains('is-matched')) {
-            return;
-        }
+        if (!clickedCard) return;
 
-        card.classList.add('is-flipped');
-        flippedCards.push(card);
+        if (flippedCards.length < 2 && !clickedCard.classList.contains('flipped') && !clickedCard.classList.contains('matched')) {
+            clickedCard.classList.add('flipped');
+            flippedCards.push(clickedCard);
 
-        // 2枚目のカードがめくられたらチェック
-        if (flippedCards.length === 2) {
-            gameLocked = true; // めくり中はクリックを無効にする
-            checkForMatch();
+            if (flippedCards.length === 2) {
+                setTimeout(checkMatch, 800);
+            }
         }
     }
 
-    // めくられたカードがマッチしているかチェック
-    function checkForMatch() {
+    function checkMatch() {
         const [card1, card2] = flippedCards;
 
         if (card1.dataset.emoji === card2.dataset.emoji) {
-            // マッチした場合
-            card1.classList.add('is-matched');
-            card2.classList.add('is-matched');
+            card1.classList.add('matched');
+            card2.classList.add('matched');
             matchedPairs++;
-            remainingPairsDisplay.textContent = totalPairs - matchedPairs;
-            flippedCards = [];
-            gameLocked = false; // ロック解除
-
-            if (matchedPairs === totalPairs) {
-                // 全てのペアを見つけた場合
-                gameMessage.textContent = '✨ ゲームクリア！おめでとうございます！ ✨';
-                resetButton.style.display = 'block';
+            if (matchedPairs === emojis.length) {
+                setTimeout(() => showGameOverScreen('clear'), 500);
             }
         } else {
-            // マッチしない場合
-            mistakes++;
-            mistakesDisplay.textContent = mistakes;
-
-            if (mistakes >= maxMistakes) {
-                // ゲームオーバー
-                gameMessage.textContent = `残念！ゲームオーバーです。`;
-                // 全てのカードを表向きにする（ゲームオーバー後も絵文字が見えるように）
-                cards.forEach(card => card.classList.add('is-flipped'));
-                resetButton.style.display = 'block';
-                gameLocked = true; // ゲームオーバー時は完全にロック
+            failCount++;
+            failCountDisplay.textContent = failCount;
+            if (failCount >= maxFails) {
+                setTimeout(() => showGameOverScreen('fail'), 500);
             } else {
-                // マッチしなかったカードを裏返す
                 setTimeout(() => {
-                    card1.classList.remove('is-flipped');
-                    card2.classList.remove('is-flipped');
-                    flippedCards = [];
-                    gameLocked = false; // ロック解除
-                }, 1000); // 1秒後に裏返す
+                    card1.classList.remove('flipped');
+                    card2.classList.remove('flipped');
+                }, 800);
             }
         }
+        flippedCards = [];
     }
 
-    // リセットボタンのイベントリスナー
-    resetButton.addEventListener('click', initializeGame);
+    function showGameOverScreen(result) {
+        if (result === 'clear') {
+            gameOverMessage.textContent = '🎉 ゲームクリア！ 🎉';
+        } else {
+            gameOverMessage.textContent = `ゲームオーバー... (失敗: ${failCount}回)`;
+        }
+        gameOverScreen.classList.add('active');
+    }
 
-    // 最初のゲーム開始
+    restartButton.addEventListener('click', initializeGame);
+
     initializeGame();
 });

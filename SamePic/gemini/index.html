@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>絵文字神経衰弱</title>
+    <title>絵合わせパズル</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>絵文字神経衰弱</h1>
+        <h1>絵合わせパズル</h1>
         <div class="game-info">
-            <p>間違えた回数: <span id="mistakes">0</span> / 10</p>
-            <p>残りペア数: <span id="remaining-pairs">10</span></p>
+            <p>失敗回数: <span id="fail-count">0</span> / 10</p>
         </div>
-        <div id="game-board" class="game-board">
-            </div>
-        <button id="reset-button" class="reset-button">もう一度遊ぶ</button>
-        <div id="game-message" class="game-message"></div>
+        <div id="puzzle-board" class="puzzle-board"></div>
+        <div class="game-over-screen" id="game-over-screen">
+            <p id="game-over-message"></p>
+            <button id="restart-button">もう一度遊ぶ</button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>

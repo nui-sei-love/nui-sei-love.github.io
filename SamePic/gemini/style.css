@@ -1,137 +1,194 @@
 body {
-    font-family: 'Segoe UI Emoji', 'Noto Color Emoji', 'Apple Color Emoji', sans-serif;
+    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     margin: 0;
-    background-color: #f0f0f0;
+    background-color: #f8f8f8; /* 背景を明るい色に */
     color: #333;
-    overflow-y: auto; /* 縦長画面でスクロール可能に */
-    padding: 20px 0; /* 上下の余白 */
     box-sizing: border-box;
+    padding: 20px; /* 全体のパディング */
 }
 
 .container {
-    background-color: #fff;
-    padding: 25px;
+    background-color: #fffaf0; /* アイボリー */
     border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 25px;
     text-align: center;
-    width: 90%; /* スマホ向けに幅を調整 */
-    max-width: 400px; /* 最大幅を設定 */
+    width: 100%;
+    max-width: 400px; /* スマホ向けに最大幅を設定 */
     box-sizing: border-box;
+    position: relative; /* ゲームオーバー画面の位置決めの基準 */
+    overflow: hidden; /* 角丸に合わせて内容を隠す */
 }
 
 h1 {
-    color: #4CAF50;
+    color: #8b4513; /* セピアブラウン */
     margin-bottom: 20px;
     font-size: 1.8em;
 }
 
 .game-info {
-    margin-bottom: 20px;
     font-size: 1.1em;
-    font-weight: bold;
-    color: #555;
+    margin-bottom: 15px;
+    color: #694a2a; /* ダークブラウン */
 }
 
-.game-board {
+.puzzle-board {
     display: grid;
-    /* 4x5のグリッドレイアウト */
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(5, 1fr);
-    gap: 10px; /* パネル間の余白 */
-    aspect-ratio: 4 / 5; /* 縦長になるようにアスペクト比を設定 */
-    width: 100%; /* 親要素の幅に合わせる */
-    max-width: 350px; /* スマホでの見やすさのために最大幅を設定 */
-    /* ★★★ ここを修正 ★★★ */
-    margin: 60px auto 20px auto; /* 上部のマージンを増やして下に下げる */
-    /* ★★★ ここまで修正 ★★★ */
+    grid-template-columns: repeat(4, 1fr); /* 4列に設定 */
+    gap: 6px; /* カード間の隙間 */
+    padding: 6px; /* ボード内のパディング */
+    border: 3px solid #d2b48c; /* パステルブラウン */
+    border-radius: 10px;
+    background-color: #fdf5e6; /* 薄いクリーム色 */
+    max-width: 100%; /* 親要素の幅に合わせる */
+    margin: 0 auto; /* 中央寄せ */
+    box-sizing: border-box; /* パディングやボーダーを幅に含める */
 }
+
+/* ★★★ カードのアニメーション関連の変更 ★★★ */
 
 .card {
-    background-color: transparent; /* カード自体の背景は透明に */
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2.5em; /* 絵文字のサイズ */
-    cursor: pointer;
-    user-select: none;
-    transition: transform 0.6s; /* 全体のフリップアニメーション */
-    height: 0;
-    padding-bottom: 100%;
+    width: 100%;
+    aspect-ratio: 1 / 1; /* 要素の縦横比を1:1に固定 */
     position: relative;
-    transform-style: preserve-3d; /* 3Dフリップのため */
+    cursor: pointer;
+    perspective: 1000px; /* 3D変換の視点距離 */
+    border-radius: 8px; /* 親要素にも角丸を適用 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* シャドウも親要素に */
 }
 
-.card.is-flipped {
-    transform: rotateY(180deg);
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s; /* 回転アニメーションの時間 */
+    transform-style: preserve-3d; /* 子要素が3D空間を維持するように */
+    border-radius: 8px;
 }
 
-.card.is-matched {
-    cursor: default;
-    pointer-events: none; /* クリック不可にする */
+.card.flipped .card-inner {
+    transform: rotateY(180deg); /* めくられたときにY軸で180度回転 */
 }
 
-.card.is-matched .card-front {
-    background-color: #d4edda; /* マッチした色 */
-    opacity: 0.7; /* 半透明にする */
-}
-
-.card.is-disabled {
-    pointer-events: none; /* めくり中のクリックを防ぐ */
-}
-
-/* カードの表面と裏面 */
-.card .card-inner {
+.card-front, .card-back {
     position: absolute;
     width: 100%;
     height: 100%;
-    backface-visibility: hidden; /* 裏面を見せない */
+    -webkit-backface-visibility: hidden; /* Safari対応 */
+    backface-visibility: hidden; /* 回転時に裏面が見えないように */
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 8px; /* 角丸を適用 */
+    border-radius: 8px;
+    font-size: 2em; /* 絵文字のサイズ */
+    user-select: none; /* テキスト選択を無効化 */
 }
 
-.card .card-front {
-    background-color: #e6ffe6; /* 表側の色 */
-    transform: rotateY(180deg); /* 表面を初期状態で裏返す */
+.card-front {
+    background-color: #deb887; /* パステルブラウン - カードの裏面（絵文字が隠れている面） */
 }
 
-.card .card-back {
-    background-color: #a0d9b5; /* 裏側の色 */
+.card-back {
+    background-color: #ffe4b5; /* 明るいパステルブラウン - カードの表面（絵文字が表示される面） */
+    transform: rotateY(180deg); /* 初期状態で裏返しておく */
+    color: #333; /* 絵文字が常に表示されるように濃い色を設定 */
 }
 
-.reset-button {
-    background-color: #007bff;
+/* マッチしたカードのスタイル */
+.card.matched {
+    pointer-events: none; /* クリックイベントを無効化 */
+}
+
+.card.matched .card-inner {
+    /* background-color: #e0b7a0; ★削除：これを card.matched .card-back に移動 */
+    /* opacity: 0.7; ★削除済み */
+    cursor: default;
+    /* box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2); ★削除：これも card.matched .card-back に移動 */
+}
+
+/* ★追加：マッチしたカードの表面（絵文字が表示されている側）のスタイル */
+.card.matched .card-back {
+    background-color: #fffaf0; /* フローラルホワイト */
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    /* opacityはここで調整しない */
+}
+
+
+.game-over-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 15px; /* 親要素と合わせる */
+    z-index: 100;
+    font-size: 1.5em;
+    color: #8b4513;
+    opacity: 0; /* 初期状態では透明 */
+    visibility: hidden; /* 初期状態では非表示 */
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.game-over-screen.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.game-over-screen p {
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-align: center;
+    padding: 0 15px;
+}
+
+#restart-button {
+    background-color: #d2b48c; /* パステルブラウン */
     color: white;
     border: none;
     padding: 12px 25px;
     border-radius: 8px;
-    cursor: pointer;
     font-size: 1.1em;
-    margin-top: 20px;
+    cursor: pointer;
     transition: background-color 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.reset-button:hover {
-    background-color: #0056b3;
-}
-
-.game-message {
-    margin-top: 20px;
-    font-size: 1.4em;
-    font-weight: bold;
-    color: #d9534f; /* ゲームオーバー時の色 */
-    min-height: 2em; /* メッセージ表示領域を確保 */
+#restart-button:hover {
+    background-color: #c7a880; /* 少し濃いパステルブラウン */
 }
 
 /* スマホ縦向きでの調整 */
-@media (max-width: 600px) {
-    .card {
-        font-size: 2em; /* 小さい画面では絵文字を少し小さく */
+@media (max-width: 480px) {
+    .container {
+        padding: 15px;
+        margin: 10px; /* 小さなマージンを追加 */
     }
-}15:53 2025/06/14
+
+    h1 {
+        font-size: 1.6em;
+    }
+
+    .card-front, .card-back {
+        font-size: 1.8em; /* スマホ縦向きでの絵文字サイズをさらに小さく */
+    }
+
+
+    .game-over-screen p {
+        font-size: 1.2em;
+    }
+
+    #restart-button {
+        padding: 10px 20px;
+        font-size: 1em;
+    }
+}
