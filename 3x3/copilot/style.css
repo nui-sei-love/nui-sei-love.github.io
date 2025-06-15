@@ -1,0 +1,31 @@
+body {
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+#puzzle-container {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 2px;
+    justify-content: center;
+    margin: 20px auto;
+    position: relative;
+}
+
+.tile {
+    width: 100px;
+    height: 100px;
+    background-size: 300px 300px;
+    background-position: center;
+    cursor: pointer;
+}
+
+#empty {
+    background: none;
+}
+
+#original-image {
+    display: none;
+    margin-top: 20px;
+}
