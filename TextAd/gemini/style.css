@@ -1,0 +1,118 @@
+body {
+    font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Segoe UI Symbol', 'Noto Color Emoji', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0e6d6; /* 淡いブラウンの背景 */
+    color: #333;
+    overflow-y: auto; /* 縦方向のスクロールを許可 */
+    overflow-x: hidden; /* 横方向のスクロールは禁止 */
+    padding: 20px; /* 画面端との余白 */
+    box-sizing: border-box; /* paddingをwidthに含める */
+}
+
+.game-container {
+    background-color: #fff8ee; /* 少し明るいブラウン系のコンテナ背景 */
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    padding: 20px; /* 少しパディングを減らした */
+    max-width: 350px; /* PCでの最大幅を約50%に縮小 */
+    width: 95%; /* 小さな画面では横幅いっぱいに */
+    text-align: center;
+    box-sizing: border-box; /* paddingをwidthに含める */
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* 要素間の隙間も少し減らした */
+}
+
+h1 {
+    color: #8b4513; /* 茶色系の見出し */
+    margin-bottom: 15px; /* マージンを調整 */
+    font-size: 1.5em; /* 見出しのフォントサイズを縮小 */
+}
+
+#game-area {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* 7x7のグリッド */
+    grid-template-rows: repeat(7, 1fr);
+    width: 280px; /* 固定幅でマップを縮小 (7*40px) */
+    height: 280px; /* 固定高さでマップを縮小 (7*40px) */
+    margin: 0 auto 15px auto; /* マージンを調整 */
+    border: 2px solid #a0522d; /* 濃いめのブラウンの枠 */
+    background-color: #f5deb3; /* 砂色に近いブラウン */
+    box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.1); /* シャドウを調整 */
+    border-radius: 8px;
+    overflow: hidden; /* はみ出しを防ぐ */
+}
+
+.grid-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.2em; /* 絵文字のサイズをマップに合わせて縮小 */
+    user-select: none; /* テキスト選択を無効化 */
+    touch-action: manipulation; /* タップの遅延を防ぐ */
+}
+
+#message-box {
+    background-color: #fafad2; /* 明るいクリーム色 */
+    border: 1px solid #d2b48c; /* 薄いブラウンの枠 */
+    padding: 12px; /* パディングを調整 */
+    border-radius: 8px;
+    min-height: 70px; /* 最小高さを調整 */
+    text-align: left;
+    line-height: 1.5; /* 行の高さを調整 */
+    font-size: 0.95em; /* メッセージのフォントサイズを縮小 */
+    color: #5a4a3a;
+}
+
+#choices {
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* 選択肢の隙間を調整 */
+}
+
+.choice-button {
+    background-color: #d2b48c; /* ボタンの背景色（薄いブラウン） */
+    color: #4a3a2d; /* ボタンの文字色 */
+    padding: 10px 15px; /* パディングを調整 */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95em; /* ボタンのフォントサイズを縮小 */
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    text-align: left; /* テキストを左寄せ */
+}
+
+.choice-button:hover {
+    background-color: #c0a078; /* ホバー時の色 */
+    transform: translateY(-1px); /* ホバー時の動きを控えめに */
+}
+
+.choice-button:active {
+    transform: translateY(0);
+    background-color: #b09068; /* クリック時の色 */
+}
+
+/* スマートフォン向けの調整は、固定幅にしたことでほとんど不要になりましたが、
+   さらに微調整が必要な場合はここに追加します */
+@media (max-width: 400px) {
+    /* さらに小さな画面での調整があればここに追加 */
+    .game-container {
+        padding: 15px;
+        gap: 10px;
+    }
+    h1 {
+        font-size: 1.4em;
+    }
+    #message-box {
+        font-size: 0.9em;
+        min-height: 60px;
+    }
+    .choice-button {
+        font-size: 0.9em;
+        padding: 8px 12px;
+    }
+}
